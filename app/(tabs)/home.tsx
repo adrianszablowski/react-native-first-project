@@ -12,7 +12,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 const Home = () => {
 	const [refreshing, setRefreshing] = useState<boolean>(false);
 	const { data: posts, refetch } = useAppwrite(getAllPosts);
-	const { data: latestPosts, refetch: refetchLatestPosts } = useAppwrite(getLatestPosts);
+	const { data: latestPosts } = useAppwrite(getLatestPosts);
 
 	const onRefresh = async () => {
 		setRefreshing(true);
@@ -37,16 +37,10 @@ const Home = () => {
 								<Image source={images.logoSmall} className='w-9 h-10' resizeMode='contain' />
 							</View>
 						</View>
-						<SearchInput
-							placeholder='Search for a video topic'
-							handleChangeText={(e: string) => {
-								console.log(e);
-							}}
-							value=''
-						/>
+						<SearchInput />
 						<View className='w-full flex-1 pt-5 pb-8'>
 							<Text className='text-gray-100 text-lg font-pregular mb-3'>Latest Videos</Text>
-							<Trending posts={(posts as PostType[]) ?? []} />
+							<Trending posts={(latestPosts as PostType[]) ?? []} />
 						</View>
 					</View>
 				)}

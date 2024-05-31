@@ -9,8 +9,6 @@ const useAppwrite = (fn: any) => {
 		try {
 			const response = await fn();
 
-			console.log(response[0]);
-
 			setData(response);
 		} catch (error: any) {
 			Alert.alert('Error', error.message);

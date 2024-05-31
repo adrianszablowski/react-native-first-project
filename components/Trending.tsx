@@ -29,7 +29,7 @@ const zoomOut = {
 const TrendingItem = ({ activeItem, item }: { activeItem: PostType | string; item: PostType }) => {
 	const [play, setPlay] = useState(false);
 	return (
-		<Animatable.View className='mr-5' animation={activeItem === item.$id ? zoomIn : zoomOut} duration={500}>
+		<Animatable.View className='mx-5' animation={activeItem === item.$id ? zoomIn : zoomOut} duration={500}>
 			{play ? (
 				<Video
 					source={{ uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
