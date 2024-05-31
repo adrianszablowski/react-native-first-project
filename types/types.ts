@@ -24,3 +24,5 @@ type CreatorType = {
 	email: string;
 	username: string;
 };
+
+type ViewableType = { index: number; isViewable: boolean; item: []; key: string };
