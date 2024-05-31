@@ -4,8 +4,8 @@ import { ReactNode, createContext, useContext, useEffect, useState } from 'react
 interface GlobalContextType {
 	isLoggedIn: boolean;
 	setIsLoggedIn: React.Dispatch<React.SetStateAction<boolean>>;
-	user: {} | null | undefined;
-	setUser: React.Dispatch<React.SetStateAction<{} | null | undefined>>;
+	user: UserType | null | undefined;
+	setUser: React.Dispatch<React.SetStateAction<UserType | null | undefined>>;
 	isLoading: boolean;
 }
 
@@ -13,7 +13,7 @@ const GlobalContext = createContext<GlobalContextType | null>(null);
 
 const GlobalProvider = ({ children }: { children: ReactNode }) => {
 	const [isLoggedIn, setIsLoggedIn] = useState(false);
-	const [user, setUser] = useState<{} | null | undefined>(null);
+	const [user, setUser] = useState<UserType | null | undefined>(null);
 	const [isLoading, setIsLoading] = useState(true);
 
 	useEffect(() => {
@@ -26,7 +26,7 @@ const GlobalProvider = ({ children }: { children: ReactNode }) => {
 					setUser(null);
 				} else {
 					setIsLoggedIn(true);
-					setUser(user);
+					setUser(user as UserType);
 				}
 			} catch (error: any) {
 				console.log(error);

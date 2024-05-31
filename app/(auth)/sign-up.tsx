@@ -22,7 +22,7 @@ const SignUp = () => {
 
 		try {
 			const result = await createUser(form.email, form.password, form.username);
-			setUser(result);
+			setUser(result as UserType);
 			setIsLoggedIn(true);
 
 			router.replace('/home');
