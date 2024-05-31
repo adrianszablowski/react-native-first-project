@@ -1,29 +1,30 @@
+import EmptyState from '@/components/EmptyState';
+import SearchInput from '@/components/SearchInput';
+import Trending from '@/components/Trending';
+import VideoCard from '@/components/VideoCard';
+import { images } from '@/constants';
+import { getAllPosts } from '@/lib/appwrite';
+import useAppwrite from '@/lib/useAppwrite';
 import React, { useState } from 'react';
 import { FlatList, Image, RefreshControl, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { images } from '@/constants';
-import SearchInput from '@/components/SearchInput';
-import Trending from '@/components/Trending';
-import EmptyState from '@/components/EmptyState';
 
 const Home = () => {
 	const [refreshing, setRefreshing] = useState<boolean>(false);
+	const { data: posts, refetch } = useAppwrite(getAllPosts);
 
 	const onRefresh = async () => {
 		setRefreshing(true);
+		await refetch();
 		setRefreshing(false);
 	};
 
 	return (
 		<SafeAreaView className='bg-primary h-full'>
 			<FlatList
-				data={[
-					{ id: 1, user: '1' },
-					{ id: 2, user: '2' },
-					{ id: 3, user: '3' },
-				]}
-				keyExtractor={item => item.user}
-				renderItem={({ item }) => <Text className='text-3xl text-white'>{item.id}</Text>}
+				data={posts as PostType[]}
+				keyExtractor={item => item.$id}
+				renderItem={({ item }) => <VideoCard video={item} />}
 				ListHeaderComponent={() => (
 					<View className='my-6 px-4 space-y-6'>
 						<View className='justify-between items-start flex-row mb-6'>
@@ -35,7 +36,13 @@ const Home = () => {
 								<Image source={images.logoSmall} className='w-9 h-10' resizeMode='contain' />
 							</View>
 						</View>
-						<SearchInput placeholder='Search for a video topic' />
+						<SearchInput
+							placeholder='Search for a video topic'
+							handleChangeText={(e: string) => {
+								console.log(e);
+							}}
+							value=''
+						/>
 						<View className='w-full flex-1 pt-5 pb-8'>
 							<Text className='text-gray-100 text-lg font-pregular mb-3'>Latest Videos</Text>
 							<Trending
