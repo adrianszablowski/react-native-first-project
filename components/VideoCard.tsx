@@ -26,7 +26,7 @@ const VideoCard = ({ video }: { video: PostType }) => {
 			</View>
 			{play ? (
 				<Video
-					source={{ uri: 'https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4' }}
+					source={{ uri: video.video }}
 					className='w-full h-60 rounded-xl mt-3'
 					resizeMode={ResizeMode.CONTAIN}
 					useNativeControls
