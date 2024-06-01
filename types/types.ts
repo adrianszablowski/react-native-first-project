@@ -39,3 +39,21 @@ type UserType = {
 	email: string;
 	username: string;
 };
+
+type CreatePostFormType = {
+	title: string;
+	video: {
+		uri: string;
+	} | null;
+	thumbnail: { uri: string } | null;
+	prompt: string;
+};
+
+type PostFormType = {
+	title: string;
+	video: {
+		uri: string;
+	};
+	thumbnail: { uri: string };
+	prompt: string;
+};
