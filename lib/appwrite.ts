@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import { Account, Avatars, Client, Databases, ID, ImageGravity, Query, Storage } from 'react-native-appwrite';
 
 export const config = {
@@ -195,6 +196,42 @@ export const createVideo = async (form: {
 		});
 
 		return newPost;
+	} catch (error: any) {
+		throw new Error(error);
+	}
+};
+
+export const savePost = async (userId: string | undefined, postId: string) => {
+	try {
+		if (!userId) throw Error;
+
+		const post = await databases.getDocument(config.databaseId, config.videoCollectionId, postId);
+
+		if (!post) throw Error;
+
+		await databases.updateDocument(config.databaseId, config.videoCollectionId, postId, {
+			likes: [...post.likes, userId],
+		});
+	} catch (error: any) {
+		throw new Error(error);
+	}
+};
+
+export const getSavedPosts = async (userId: string | undefined) => {
+	try {
+		if (!userId) throw Error;
+
+		const posts = await databases.listDocuments(config.databaseId, config.videoCollectionId, [
+			Query.orderDesc('$createdAt'),
+		]);
+
+		const filteredPostsByUserId = posts.documents.filter((post: any) => {
+			return post.likes.some((like: any) => {
+				return like.$id === userId;
+			});
+		});
+
+		return filteredPostsByUserId;
 	} catch (error: any) {
 		throw new Error(error);
 	}

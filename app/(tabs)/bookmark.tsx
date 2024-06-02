@@ -1,17 +1,17 @@
 import EmptyState from '@/components/EmptyState';
 import SearchInput from '@/components/SearchInput';
 import VideoCard from '@/components/VideoCard';
-import { getAllPosts } from '@/lib/appwrite';
+import { useGlobalContext } from '@/context/GlobalProvider';
+import { getAllPosts, getSavedPosts } from '@/lib/appwrite';
 import useAppwrite from '@/lib/useAppwrite';
 import React, { useState } from 'react';
 import { FlatList, RefreshControl, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const Bookmark = () => {
-	// const { user } = useGlobalContext();
+	const { user } = useGlobalContext();
 	const [refreshing, setRefreshing] = useState<boolean>(false);
-	const { data: posts, refetch } = useAppwrite(getAllPosts);
-	// const { data: latestPosts } = useAppwrite(getLatestPosts);
+	const { data: savedPosts, refetch } = useAppwrite(() => getSavedPosts(user?.$id));
 
 	const onRefresh = async () => {
 		setRefreshing(true);
@@ -22,7 +22,7 @@ const Bookmark = () => {
 	return (
 		<SafeAreaView className='bg-primary h-full'>
 			<FlatList
-				data={posts as PostType[]}
+				data={savedPosts as PostType[]}
 				keyExtractor={item => item.$id}
 				renderItem={({ item }) => <VideoCard video={item} />}
 				ListHeaderComponent={() => (
@@ -33,7 +33,9 @@ const Bookmark = () => {
 						<SearchInput />
 					</View>
 				)}
-				ListEmptyComponent={() => <EmptyState title='No Videos Found' subtitle='Be the first one to upload a video' />}
+				ListEmptyComponent={() => (
+					<EmptyState title='No Videos Found' subtitle="You don't have any saved videos" showAddButton={false} />
+				)}
 				refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
 			/>
 		</SafeAreaView>

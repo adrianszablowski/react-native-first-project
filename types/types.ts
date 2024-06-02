@@ -10,6 +10,7 @@ type PostType = {
 	thumbnail: string;
 	title: string;
 	video: string;
+	likes: string[];
 };
 
 type CreatorType = {
