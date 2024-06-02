@@ -1,7 +1,7 @@
-import { View, Text, Image, TouchableOpacity } from 'react-native';
-import React, { useRef, useState } from 'react';
 import { icons } from '@/constants';
 import { ResizeMode, Video } from 'expo-av';
+import React, { useState } from 'react';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 
 const VideoCard = ({ video }: { video: PostType }) => {
 	const [play, setPlay] = useState(false);
