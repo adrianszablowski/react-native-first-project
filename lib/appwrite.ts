@@ -217,7 +217,7 @@ export const savePost = async (userId: string | undefined, postId: string) => {
 	}
 };
 
-export const removeSavePost = async (userId: string | undefined, postId: string) => {
+export const removeSavedPost = async (userId: string | undefined, postId: string) => {
 	try {
 		if (!userId) throw Error;
 
