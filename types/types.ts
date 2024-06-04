@@ -10,7 +10,18 @@ type PostType = {
 	thumbnail: string;
 	title: string;
 	video: string;
-	likes: string[];
+	likes: {
+		$collectionId: string;
+		$createdAt: string;
+		$databaseId: string;
+		$id: string;
+		$permissions: [];
+		$updatedAt: string;
+		accountId: string;
+		avatar: string;
+		email: string;
+		username: string;
+	}[];
 };
 
 type CreatorType = {
