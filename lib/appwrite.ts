@@ -217,6 +217,26 @@ export const savePost = async (userId: string | undefined, postId: string) => {
 	}
 };
 
+export const removeSavePost = async (userId: string | undefined, postId: string) => {
+	try {
+		if (!userId) throw Error;
+
+		const post = await databases.getDocument(config.databaseId, config.videoCollectionId, postId);
+
+		if (!post) throw Error;
+
+		const filteredArray = post.likes.filter((like: LikesType) => {
+			return like.$id !== userId;
+		});
+
+		await databases.updateDocument(config.databaseId, config.videoCollectionId, postId, {
+			likes: [...filteredArray],
+		});
+	} catch (error: any) {
+		throw new Error(error);
+	}
+};
+
 export const getSavedPosts = async (userId: string | undefined) => {
 	try {
 		if (!userId) throw Error;
