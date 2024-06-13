@@ -1,18 +1,23 @@
 import { icons } from '@/constants';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { savePost } from '@/lib/appwrite';
+import { removeSavedPost, savePost } from '@/lib/appwrite';
 import { ResizeMode, Video } from 'expo-av';
 import React, { useState } from 'react';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 
-const VideoCard = ({ video }: { video: PostType }) => {
+const VideoCard = ({ video, isBookmark = false }: { video: PostType; isBookmark?: boolean }) => {
 	const { user } = useGlobalContext();
 	const [play, setPlay] = useState(false);
-	const [saved, setSaved] = useState(false);
+	const [saved, setSaved] = useState(isBookmark ? true : false);
 
 	const handleSavePost = async () => {
-		setSaved(prev => (prev = !prev));
-		await savePost(user?.$id, video.$id);
+		if (!saved) {
+			setSaved(!saved);
+			await savePost(user?.$id, video.$id);
+		} else {
+			setSaved(!saved);
+			await removeSavedPost(user?.$id, video.$id);
+		}
 	};
 
 	return (
@@ -30,9 +35,12 @@ const VideoCard = ({ video }: { video: PostType }) => {
 					</View>
 				</View>
 				<View className='pt-2'>
-					{/* <Image source={icons.emptyHeart} className='w-5 h-5' resizeMode='contain' /> */}
 					<TouchableOpacity className='items-center' onPress={handleSavePost}>
-						<Text className='text-white'>{video ? 'SAVED!' : 'SAVE'}</Text>
+						{saved ? (
+							<Image source={icons.bookmark} className='h-5 w-5' tintColor='#FFA001' resizeMode='contain' />
+						) : (
+							<Image source={icons.bookmark} className='h-5 w-5' resizeMode='contain' />
+						)}
 					</TouchableOpacity>
 				</View>
 			</View>
