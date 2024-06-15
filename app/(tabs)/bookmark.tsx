@@ -2,7 +2,7 @@ import EmptyState from '@/components/EmptyState';
 import SearchInput from '@/components/SearchInput';
 import VideoCard from '@/components/VideoCard';
 import { useGlobalContext } from '@/context/GlobalProvider';
-import { getAllPosts, getSavedPosts } from '@/lib/appwrite';
+import { getSavedPosts } from '@/lib/appwrite';
 import useAppwrite from '@/lib/useAppwrite';
 import React, { useState } from 'react';
 import { FlatList, RefreshControl, Text, View } from 'react-native';
@@ -24,7 +24,7 @@ const Bookmark = () => {
 			<FlatList
 				data={savedPosts as PostType[]}
 				keyExtractor={item => item.$id}
-				renderItem={({ item }) => <VideoCard video={item} />}
+				renderItem={({ item }) => <VideoCard video={item} isBookmark={true} />}
 				ListHeaderComponent={() => (
 					<View className='my-6 px-4 pb-4'>
 						<View className='justify-between items-start flex-row mb-6'>
